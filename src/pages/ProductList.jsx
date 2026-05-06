@@ -195,7 +195,7 @@ function ProductList() {
 
                       <div className="flex items-center justify-between mt-auto pt-4">
                         <span className="text-xl font-extrabold text-gray-900">
-                          ${product.price.toFixed(2)}
+                          PKR{product.price.toFixed(2)}
                         </span>
                         <button
                           onClick={() => handleAddToCart(product)}
