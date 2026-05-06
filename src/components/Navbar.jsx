@@ -38,7 +38,7 @@ function Navbar() {
           to="/"
           className="text-xl font-extrabold tracking-tight text-white hover:opacity-80 transition-opacity duration-200"
         >
-          My<span className="text-blue-400">Shop</span>
+          Kami<span className="text-blue-400">Shopsy</span>
         </Link>
 
         {/* Desktop Links */}
