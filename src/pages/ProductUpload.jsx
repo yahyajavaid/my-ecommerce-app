@@ -4,15 +4,15 @@ function ProductUpload() {
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
   const [description, setDescription] = useState('')
-  const [image, setImage] = useState(null)
+  const [images, setImages] = useState([])
   const [status, setStatus] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setStatus('Uploading...')
 
-    if (!image) {
-      setStatus('Please select an image.')
+    if (images.length === 0) {
+      setStatus('Please select at least one image.')
       return
     }
 
@@ -20,7 +20,9 @@ function ProductUpload() {
     formData.append('name', name)
     formData.append('price', price)
     formData.append('description', description)
-    formData.append('image', image)
+    images.forEach((file) => {
+      formData.append('images', file)
+    })
 
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/products/upload`, {
@@ -35,7 +37,7 @@ function ProductUpload() {
         setName('')
         setPrice('')
         setDescription('')
-        setImage(null)
+        setImages([])
         document.getElementById('imageInput').value = ''
       } else {
         setStatus('Failed to upload product.')
@@ -82,15 +84,19 @@ function ProductUpload() {
         </div>
 
         <div>
-          <label className="text-sm font-semibold text-gray-600">Product Image</label>
+          <label className="text-sm font-semibold text-gray-600">Product Images</label>
           <input
             id="imageInput"
             type="file"
             accept="image/*"
+            multiple
             required
-            onChange={(e) => setImage(e.target.files[0])}
+            onChange={(e) => setImages(Array.from(e.target.files || []))}
             className="w-full mt-1 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
           />
+          {images.length > 0 && (
+            <p className="text-xs text-gray-500 mt-2">{images.length} image(s) selected</p>
+          )}
         </div>
 
         <button

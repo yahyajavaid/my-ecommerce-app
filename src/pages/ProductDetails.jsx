@@ -11,6 +11,7 @@ function ProductDetails() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [added, setAdded] = useState(false)
+  const [selectedImage, setSelectedImage] = useState('')
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -27,6 +28,7 @@ function ProductDetails() {
         }
         const data = await res.json()
         setProduct(data)
+        setSelectedImage((data.imageUrls && data.imageUrls[0]) || data.imageUrl || '')
       } catch (err) {
         console.error('Error fetching product:', err)
         setError('Server error while loading product.')
@@ -83,6 +85,10 @@ function ProductDetails() {
 
   if (!product) return null
 
+  const imageList = (product.imageUrls && product.imageUrls.length > 0)
+    ? product.imageUrls
+    : (product.imageUrl ? [product.imageUrl] : [])
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="bg-black text-white pt-28 pb-12 px-6">
@@ -98,7 +104,7 @@ function ProductDetails() {
           <div className="bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-sm">
             <div className="relative bg-gray-50 h-80 sm:h-[28rem]">
               <img
-                src={product.imageUrl}
+                src={selectedImage || imageList[0]}
                 alt={product.name}
                 className="w-full h-full object-cover"
               />
@@ -106,6 +112,30 @@ function ProductDetails() {
                 {product.category || 'General'}
               </span>
             </div>
+            {imageList.length > 1 && (
+              <div className="p-4 border-t border-gray-100 bg-white">
+                <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
+                  {imageList.map((imgUrl, index) => (
+                    <button
+                      key={`${imgUrl}-${index}`}
+                      type="button"
+                      onClick={() => setSelectedImage(imgUrl)}
+                      className={`h-20 rounded-2xl overflow-hidden border ${
+                        (selectedImage || imageList[0]) === imgUrl
+                          ? 'border-blue-500 ring-2 ring-blue-200'
+                          : 'border-gray-100 hover:border-gray-300'
+                      }`}
+                    >
+                      <img
+                        src={imgUrl}
+                        alt={`${product.name} ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="bg-white border border-gray-100 rounded-3xl p-8 shadow-sm">

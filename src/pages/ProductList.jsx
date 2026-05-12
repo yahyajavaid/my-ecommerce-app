@@ -169,7 +169,7 @@ function ProductList() {
                       className="relative overflow-hidden bg-gray-50 h-48 block"
                     >
                       <img
-                        src={product.imageUrl}
+                        src={(product.imageUrls && product.imageUrls[0]) || product.imageUrl}
                         alt={product.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
