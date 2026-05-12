@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { addToCart } from '../store/cartSlice'
 
 function ProductList() {
@@ -163,7 +164,10 @@ function ProductList() {
                     className="bg-white border border-gray-100 rounded-3xl overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col group"
                   >
                     {/* Image */}
-                    <div className="relative overflow-hidden bg-gray-50 h-48">
+                    <Link
+                      to={`/products/${product._id}`}
+                      className="relative overflow-hidden bg-gray-50 h-48 block"
+                    >
                       <img
                         src={product.imageUrl}
                         alt={product.name}
@@ -173,7 +177,7 @@ function ProductList() {
                       <span className="absolute top-3 left-3 bg-black bg-opacity-70 text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full backdrop-blur-sm">
                         {product.category || 'General'}
                       </span>
-                    </div>
+                    </Link>
 
                     {/* Body */}
                     <div className="p-5 flex flex-col flex-grow">
@@ -189,24 +193,35 @@ function ProductList() {
                         ))}
                       </div>
 
-                      <h3 className="font-bold text-gray-900 truncate text-base mb-1">
+                      <Link
+                        to={`/products/${product._id}`}
+                        className="font-bold text-gray-900 truncate text-base mb-1 hover:text-blue-600 transition"
+                      >
                         {product.name}
-                      </h3>
+                      </Link>
 
-                      <div className="flex items-center justify-between mt-auto pt-4">
+                      <div className="flex items-center justify-between mt-auto pt-4 gap-3">
                         <span className="text-xl font-extrabold text-gray-900">
                           PKR{product.price.toFixed(2)}
                         </span>
-                        <button
-                          onClick={() => handleAddToCart(product)}
-                          className={`px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 ${
-                            addedId === product._id
-                              ? 'bg-green-500 text-white scale-95'
-                              : 'bg-black text-white hover:bg-gray-800 active:scale-95'
-                          }`}
-                        >
-                          {addedId === product._id ? '✓ Added' : 'Add to Cart'}
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <Link
+                            to={`/products/${product._id}`}
+                            className="px-4 py-2.5 rounded-xl text-sm font-semibold border border-gray-200 text-gray-700 hover:bg-gray-100 transition"
+                          >
+                            View
+                          </Link>
+                          <button
+                            onClick={() => handleAddToCart(product)}
+                            className={`px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 ${
+                              addedId === product._id
+                                ? 'bg-green-500 text-white scale-95'
+                                : 'bg-black text-white hover:bg-gray-800 active:scale-95'
+                            }`}
+                          >
+                            {addedId === product._id ? '✓ Added' : 'Add to Cart'}
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>

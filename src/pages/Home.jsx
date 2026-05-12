@@ -183,23 +183,28 @@ function Home() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredProducts.map((product) => (
-              <div
-                key={product._id}
-                className="bg-white border border-gray-100 rounded-3xl overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col group"
-              >
-                {/* Image */}
-                <div className="relative overflow-hidden bg-gray-50 h-52">
-                  <img
-                    src={product.imageUrl}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black from-opacity-10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
+                <div
+                  key={product._id}
+                  className="bg-white border border-gray-100 rounded-3xl overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col group"
+                >
+                  {/* Image */}
+                  <Link to={`/products/${product._id}`} className="relative overflow-hidden bg-gray-50 h-52 block">
+                    <img
+                      src={product.imageUrl}
+                      alt={product.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black from-opacity-10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </Link>
 
                 {/* Body */}
                 <div className="p-5 flex flex-col flex-grow">
-                  <h3 className="text-base font-bold text-gray-900 truncate mb-1">{product.name}</h3>
+                  <Link
+                    to={`/products/${product._id}`}
+                    className="text-base font-bold text-gray-900 truncate mb-1 hover:text-blue-600 transition"
+                  >
+                    {product.name}
+                  </Link>
                   <p className="text-gray-500 text-sm line-clamp-2 flex-grow leading-relaxed">
                     {product.description || 'Amazing product for your daily needs.'}
                   </p>
@@ -208,16 +213,24 @@ function Home() {
                     <span className="text-xl font-extrabold text-gray-900">
                       PKR{product.price.toFixed(2)}
                     </span>
-                    <button
-                      onClick={() => handleAddToCart(product)}
-                      className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 ${
-                        addedId === product._id
-                          ? 'bg-green-500 text-white scale-95'
-                          : 'bg-black text-white hover:bg-gray-800 active:scale-95'
-                      }`}
-                    >
-                      {addedId === product._id ? '✓ Added' : 'Add to Cart'}
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <Link
+                        to={`/products/${product._id}`}
+                        className="px-4 py-2.5 rounded-xl text-sm font-semibold border border-gray-200 text-gray-700 hover:bg-gray-100 transition"
+                      >
+                        View
+                      </Link>
+                      <button
+                        onClick={() => handleAddToCart(product)}
+                        className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 ${
+                          addedId === product._id
+                            ? 'bg-green-500 text-white scale-95'
+                            : 'bg-black text-white hover:bg-gray-800 active:scale-95'
+                        }`}
+                      >
+                        {addedId === product._id ? '✓ Added' : 'Add to Cart'}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
